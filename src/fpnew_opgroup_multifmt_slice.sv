@@ -29,6 +29,7 @@ module fpnew_opgroup_multifmt_slice #(
 ) (
   input logic                                     clk_i,
   input logic                                     rst_ni,
+  input logic                                     clr_i,
   // Input signals
   input logic [NUM_OPERANDS-1:0][Width-1:0]       operands_i,
   input logic [NUM_FORMATS-1:0][NUM_OPERANDS-1:0] is_boxed_i,
@@ -205,6 +206,7 @@ module fpnew_opgroup_multifmt_slice #(
         ) i_fpnew_fma_multi (
           .clk_i,
           .rst_ni,
+	  .clr_i,
           .operands_i      ( local_operands  ),
           .is_boxed_i,
           .rnd_mode_i,
@@ -237,6 +239,7 @@ module fpnew_opgroup_multifmt_slice #(
         ) i_fpnew_divsqrt_multi (
           .clk_i,
           .rst_ni,
+	  .clr_i,
           .operands_i      ( local_operands[1:0] ), // 2 operands
           .is_boxed_i      ( is_boxed_2op        ), // 2 operands
           .rnd_mode_i,
@@ -269,6 +272,7 @@ module fpnew_opgroup_multifmt_slice #(
         ) i_fpnew_cast_multi (
           .clk_i,
           .rst_ni,
+	  .clr_i,
           .operands_i      ( local_operands[0]   ),
           .is_boxed_i      ( is_boxed_1op        ),
           .rnd_mode_i,
@@ -369,12 +373,12 @@ module fpnew_opgroup_multifmt_slice #(
       // 2. if the next stage only holds a bubble (not valid) -> we can pop it
       assign byp_pipe_ready[i] = byp_pipe_ready[i+1] | ~byp_pipe_valid_q[i+1];
       // Valid: enabled by ready signal, synchronous clear with the flush signal
-      `FFLARNC(byp_pipe_valid_q[i+1], byp_pipe_valid_q[i], byp_pipe_ready[i], flush_i, 1'b0, clk_i, rst_ni)
+      `FFLARNC(byp_pipe_valid_q[i+1], byp_pipe_valid_q[i], byp_pipe_ready[i], flush_i || clr_i, 1'b0, clk_i, rst_ni)
       // Enable register if pipleine ready and a valid data item is present
       assign reg_ena = byp_pipe_ready[i] & byp_pipe_valid_q[i];
       // Generate the pipeline registers within the stages, use enable-registers
-      `FFL(byp_pipe_target_q[i+1],  byp_pipe_target_q[i],  reg_ena, '0)
-      `FFL(byp_pipe_aux_q[i+1],     byp_pipe_aux_q[i],     reg_ena, '0)
+      `FFLARNC(byp_pipe_target_q[i+1],  byp_pipe_target_q[i],  reg_ena, clr_i, '0, clk_i, rst_ni)
+      `FFLARNC(byp_pipe_aux_q[i+1],     byp_pipe_aux_q[i],     reg_ena, clr_i, '0, clk_i, rst_ni)
     end
     // Output stage: Ready travels backwards from output side, driven by downstream circuitry
     assign byp_pipe_ready[NumPipeRegs] = out_ready_i & result_is_vector;

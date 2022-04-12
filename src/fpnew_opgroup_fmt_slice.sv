@@ -25,6 +25,7 @@ module fpnew_opgroup_fmt_slice #(
 ) (
   input logic                               clk_i,
   input logic                               rst_ni,
+  input logic                               clr_i,
   // Input signals
   input logic [NUM_OPERANDS-1:0][Width-1:0] operands_i,
   input logic [NUM_OPERANDS-1:0]            is_boxed_i,
@@ -107,6 +108,7 @@ module fpnew_opgroup_fmt_slice #(
         ) i_fma (
           .clk_i,
           .rst_ni,
+	  .clr_i,
           .operands_i      ( local_operands               ),
           .is_boxed_i      ( is_boxed_i[NUM_OPERANDS-1:0] ),
           .rnd_mode_i,
@@ -168,6 +170,7 @@ module fpnew_opgroup_fmt_slice #(
         ) i_noncomp (
           .clk_i,
           .rst_ni,
+	  .clr_i,
           .operands_i      ( local_operands               ),
           .is_boxed_i      ( is_boxed_i[NUM_OPERANDS-1:0] ),
           .rnd_mode_i,
