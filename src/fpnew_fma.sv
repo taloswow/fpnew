@@ -138,7 +138,7 @@ module fpnew_fma #(
     `FFLARNC(inp_pipe_op_q[i+1],       inp_pipe_op_q[i],       reg_ena, clr_i, fpnew_pkg::FMADD, clk_i, rst_ni)
     `FFLARNC(inp_pipe_op_mod_q[i+1],   inp_pipe_op_mod_q[i],   reg_ena, clr_i, '0, clk_i, rst_ni)
     `FFLARNC(inp_pipe_tag_q[i+1],      inp_pipe_tag_q[i],      reg_ena, clr_i, TagType'('0), clk_i, rst_ni)
-    `FFLARNC(inp_pipe_aux_q[i+1],      inp_pipe_aux_q[i],      reg_ena, clr_I, AuxType'('0), clk_i, rst_ni)
+    `FFLARNC(inp_pipe_aux_q[i+1],      inp_pipe_aux_q[i],      reg_ena, clr_i, AuxType'('0), clk_i, rst_ni)
   end
 
   // -----------------
