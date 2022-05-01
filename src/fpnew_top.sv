@@ -22,6 +22,7 @@ module fpnew_top #(
 ) (
   input logic                               clk_i,
   input logic                               rst_ni,
+  input logic                               clr_i,
   // Input signals
   input logic [NUM_OPERANDS-1:0][WIDTH-1:0] operands_i,
   input fpnew_pkg::roundmode_e              rnd_mode_i,
