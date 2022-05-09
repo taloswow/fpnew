@@ -28,6 +28,7 @@ module fpnew_opgroup_block #(
 ) (
   input logic                                     clk_i,
   input logic                                     rst_ni,
+  input logic                                     clr_i,
   // Input signals
   input logic [NUM_OPERANDS-1:0][Width-1:0]       operands_i,
   input logic [NUM_FORMATS-1:0][NUM_OPERANDS-1:0] is_boxed_i,
@@ -208,6 +209,7 @@ module fpnew_opgroup_block #(
   ) i_arbiter (
     .clk_i,
     .rst_ni,
+    .clr_i,
     .flush_i,
     .rr_i   ( '0             ),
     .req_i  ( fmt_out_valid  ),

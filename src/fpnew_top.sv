@@ -116,6 +116,7 @@ module fpnew_top #(
     ) i_opgroup_block (
       .clk_i,
       .rst_ni,
+      .clr_i,
       .operands_i      ( operands_i[NUM_OPS-1:0] ),
       .is_boxed_i      ( input_boxed             ),
       .rnd_mode_i,
@@ -152,6 +153,7 @@ module fpnew_top #(
   ) i_arbiter (
     .clk_i,
     .rst_ni,
+    .clr_i,
     .flush_i,
     .rr_i   ( '0             ),
     .req_i  ( opgrp_out_valid ),
